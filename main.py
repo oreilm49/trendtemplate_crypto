@@ -84,16 +84,10 @@ class Ticker:
             if not one_fifty_day > two_hundred_day:
                 raise DowntrendingException(
                     f"{self.ticker} 150 day is below 200 day. 150 day: {one_fifty_day}. 200 day: {two_hundred_day}")
-            if not one_fifty_day > two_hundred_day:
-                raise DowntrendingException(
-                    f"{self.ticker} 150 day is below 200 day. 150 day: {one_fifty_day}. 200 day: {two_hundred_day}")
             two_hundred_day_is_monotonic: bool = self.price_data['200MA'].iloc[-1:-30].is_monotonic
             if not two_hundred_day_is_monotonic:
                 raise DowntrendingException(
                     f"{self.ticker} 200 day is not monotonic (in an uptrend): 200 day: {two_hundred_day}. 30 days ago: {self.price_data['200MA'].iloc[-30]}")
-            if not fifty_day > one_fifty_day:
-                raise DowntrendingException(
-                    f"{self.ticker} 50 day is below 150 day. 50 day: {fifty_day}. 150 day: {one_fifty_day}")
             if not fifty_day > one_fifty_day:
                 raise DowntrendingException(
                     f"{self.ticker} 50 day is below 150 day. 50 day: {fifty_day}. 150 day: {one_fifty_day}")
