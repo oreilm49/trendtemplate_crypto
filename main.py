@@ -18,9 +18,9 @@ if __name__ == '__main__':
     base_currencies: Optional[list[str]] = args.base_currencies
     usd_pairs: bool = args.usd_pairs
     valid_base_currencies: Optional[Sequence[str]] = None
-    if base_currencies and usd_pairs:
+    if base_currencies is not None and usd_pairs:
         raise DuplicatedArgs("You can't specify both base_currencies and usd_pairs")
-    if base_currencies:
+    if base_currencies is not None:
         for currency in base_currencies:
             if currency not in BASE_CURRENCIES:
                 raise InvalidBaseCurrency(f"Invalid base currency: {currency}. Must be one of: {','.join(BASE_CURRENCIES)}")
