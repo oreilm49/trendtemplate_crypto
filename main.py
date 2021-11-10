@@ -9,8 +9,8 @@ parser = argparse.ArgumentParser(
     prog="Trend template - crypto",
 )
 parser.add_argument('-bc', '--base_currencies', nargs='+', help='One or more base currencies to use to screen coins.')
-parser.add_argument('-usd', '--usd_pairs', help='Only screen USD pairs.')
-parser.set_defaults(feature=True)
+parser.add_argument('-usd', '--usd_pairs', help='Only screen USD pairs.', action='store_true')
+parser.set_defaults(usd_pairs=False)
 
 
 if __name__ == '__main__':
