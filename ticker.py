@@ -4,14 +4,7 @@ from binance.client import Client
 import pandas as pd
 
 from constants import PRICE_DATA_COLUMNS, BASE_CURRENCIES
-
-
-class DowntrendingException(Exception):
-    pass
-
-
-class InvalidTicker(Exception):
-    pass
+from exceptions import InvalidTicker, DowntrendingException
 
 
 class Ticker:
