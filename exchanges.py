@@ -1,15 +1,17 @@
 import json
-from collections import Iterator
+from collections import Iterator, Sequence
 from binance.client import Client
 
-from constants import BASE_CURRENCIES_USD_PEG
-from ticker import Ticker, InvalidTicker
+from constants import BASE_CURRENCIES_USD_PEG, BASE_CURRENCIES
+from exceptions import InvalidTicker
+from ticker import Ticker
 
 
 class Binance:
-    def __init__(self) -> None:
+    def __init__(self, valid_base_currencies: Sequence[str] = BASE_CURRENCIES) -> None:
         super().__init__()
         self.client: Client = self.conn()
+        self.valid_base_currencies = valid_base_currencies
 
     def conn(self) -> Client:
         with open("config.json", "r") as read_file:
@@ -21,7 +23,7 @@ class Binance:
         tickers = self.client.get_all_tickers()
         for ticker in sorted(tickers, key=lambda d: d['symbol']):
             try:
-                yield Ticker(ticker['symbol'], client=self.client)
+                yield Ticker(ticker['symbol'], client=self.client, valid_base_currencies=self.valid_base_currencies)
             except InvalidTicker:
                 pass
 
