@@ -48,19 +48,16 @@ class Ticker:
             .astype(PRICE_DATA_COLUMNS)
         price_data['time_open'] = price_data['time_open'].apply(pd.Timestamp, unit="ms")
         price_data['time_close'] = price_data['time_close'].apply(pd.Timestamp, unit="ms")
-        price_data['50MA'] = price_data['Close'].rolling(window=50).mean()
-        price_data['150MA'] = price_data['Close'].rolling(window=150).mean()
-        price_data['200MA'] = price_data['Close'].rolling(window=200).mean()
-        price_data['fiftyTwoWeekHigh'] = price_data['high'].max(),
-        price_data['fiftyTwoWeekLow'] = price_data['low'].min(),
-        price_data['previousClose'] = price_data['Close'].iloc[-1],
+        price_data['50MA'] = price_data['close'].rolling(window=50).mean()
+        price_data['150MA'] = price_data['close'].rolling(window=150).mean()
+        price_data['200MA'] = price_data['close'].rolling(window=200).mean()
         return price_data
 
     def in_uptrend(self) -> bool:
         price_data: pd.DataFrame = self.get_year_price_data()
-        yearly_high = price_data["fiftyTwoWeekHigh"]
-        yearly_low = price_data["fiftyTwoWeekLow"]
-        close = price_data["previousClose"]
+        yearly_high = price_data['high'].max()
+        yearly_low = price_data['low'].min()
+        close = price_data['close'].iloc[-1]
         fifty_day = price_data['50MA'].iloc[-1]
         one_fifty_day = price_data['150MA'].iloc[-1]
         two_hundred_day = price_data['200MA'].iloc[-1]
