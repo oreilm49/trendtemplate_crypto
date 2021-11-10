@@ -3,7 +3,7 @@ This is an adaptation (for the crypto market) of Mark Minervini's trend template
 
 The sole purpose of this screener is to identify assets that are in a confirmed uptrend.
 
-All [BUSD](https://www.binance.com/en/busd) pairs on Binance are screened to meet a specific criteria to confirm if the coin is in an uptrend.
+Specified currency pairs on Binance are screened to meet a specific criteria to confirm if the coin is in an uptrend.
 This drastically reduces the noise in the market when searching for trading ideas.
 
 ## The criteria
@@ -36,4 +36,24 @@ This drastically reduces the noise in the market when searching for trading idea
     ```
 
 ### Run the screener
-* `./run.sh`
+* Screen all supported pairs: USD, BTC and ETH:
+  ```sh
+    python main.py
+    ```
+* Screen just BUSD pairs
+  ```sh
+    python main.py -bc BUSD
+    ```
+* Screen all USD peg pairs
+  ```sh
+    python main.py -usd
+    ```
+* Screen all BTC and ETH pairs
+  ```sh
+    python main.py -bc BTC ETH
+    ```
+  
+## Supported Base Currencies
+* USD pegs: `BUSD, USDT, USDC, DAI, TUSD`
+* Cryptocurrencies: `BTC, ETH`
+
