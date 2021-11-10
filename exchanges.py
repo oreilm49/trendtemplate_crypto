@@ -2,8 +2,8 @@ import json
 from collections import Iterator
 from binance.client import Client
 
-from constants import BASE_CURRENCIES
-from ticker import Ticker
+from constants import BASE_CURRENCIES_USD_PEG
+from ticker import Ticker, InvalidTicker
 
 
 class Binance:
@@ -16,19 +16,27 @@ class Binance:
             config = json.load(read_file)
             return Client(config['api_key'], config['api_secret'])
 
-    def valid_tickers(self) -> Iterator[str]:
+    def valid_tickers(self) -> Iterator[Ticker]:
+        """"""
         tickers = self.client.get_all_tickers()
-        for ticker in tickers:
-            if ticker['symbol'][-4:] in BASE_CURRENCIES:
-                yield ticker['symbol']
+        for ticker in sorted(tickers, key=lambda d: d['symbol']):
+            try:
+                yield Ticker(ticker['symbol'], client=self.client)
+            except InvalidTicker:
+                pass
 
     def uptrending_stocks(self) -> Iterator[str]:
-        for symbol in self.valid_tickers():
+        peg_trending: list[str] = []
+        for ticker in self.valid_tickers():
+            # avoid checking the same coin twice, just because the base pair is different
+            if ticker.coin in peg_trending:
+                continue
             try:
-                ticker = Ticker(symbol, self.client)
                 if ticker.in_uptrend():
-                    yield symbol
+                    if ticker.base_currency in BASE_CURRENCIES_USD_PEG:
+                        peg_trending.append(ticker.coin)
+                    yield ticker
             except IndexError:
                 pass
             except Exception as e:
-                print(f"error: {symbol} - {e}")
+                print(f"error: {ticker.symbol} - {e}")
