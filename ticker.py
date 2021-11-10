@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Sequence
 
 from binance.client import Client
 import pandas as pd
@@ -14,24 +14,16 @@ class InvalidTicker(Exception):
     pass
 
 
-def get_base_currency_and_coin(ticker: str) -> tuple[str, str]:
-    slice_sizes = 3, 4
-    for size in slice_sizes:
-        base_currency = ticker[-size:]
-        coin = ticker[:-size]
-        if base_currency in BASE_CURRENCIES:
-            return base_currency, coin
-    raise InvalidTicker(f"{ticker} doesn't seem to have a valid base currency.")
-
-
 class Ticker:
     price_data: Optional[pd.DataFrame] = None
 
-    def __init__(self, symbol: str, client: Optional[Client] = None) -> None:
+    def __init__(self, symbol: str, client: Optional[Client] = None,
+                 valid_base_currencies: Sequence[str] = BASE_CURRENCIES) -> None:
         super().__init__()
         self.symbol = symbol
         self.client = client
-        self.base_currency, self.coin = get_base_currency_and_coin(symbol)
+        self.valid_base_currencies = valid_base_currencies
+        self.base_currency, self.coin = self.get_base_currency_and_coin(symbol)
 
     def __str__(self) -> str:
         return self.symbol
@@ -92,3 +84,12 @@ class Ticker:
         except DowntrendingException as e:
             return False
         return True
+
+    def get_base_currency_and_coin(self, ticker: str) -> tuple[str, str]:
+        slice_sizes = 3, 4
+        for size in slice_sizes:
+            base_currency = ticker[-size:]
+            coin = ticker[:-size]
+            if base_currency in self.valid_base_currencies:
+                return base_currency, coin
+        raise InvalidTicker(f"{ticker} doesn't seem to have a valid base currency.")
