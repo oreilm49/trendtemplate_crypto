@@ -14,7 +14,7 @@ PRICE_DATA_COLUMNS = {
     'open': "f",
     'high': "f",
     'low': "f",
-    'Close': "f",
+    'close': "f",
     'volume': "f",
     'time_close': "O",
     'quote_asset_volume': "f",
