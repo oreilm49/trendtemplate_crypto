@@ -23,6 +23,3 @@ PRICE_DATA_COLUMNS = {
     'taker_buy_quote_asset_volume': "f",
     'to_be_ignored': "f"
 }
-STOCK_INFO_52_WEEK_HIGH = "fiftyTwoWeekHigh"
-STOCK_INFO_52_WEEK_LOW = "fiftyTwoWeekLow"
-STOCK_INFO_PREV_CLOSE = "previousClose"
