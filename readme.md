@@ -23,8 +23,8 @@ This drastically reduces the noise in the market when searching for trading idea
 * Python 3.9
 
 ### Set up the project
-* `python3 -m venv`
-* `source bin/activate`
+* `python3 -m venv venv`
+* `source venv/bin/activate`
 * `pip install --upgrade pip`
 * `pip install -r requirements.txt`
 * Add a `config.json` to the project root containing your binance credentials:
